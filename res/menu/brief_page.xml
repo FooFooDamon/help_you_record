@@ -1,0 +1,65 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.project.help_you_record.MainActivity" >
+
+    <item
+        android:id="@+id/menu_query"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/query"/>
+
+    <item
+        android:id="@+id/menu_export"
+        android:orderInCategory="101"
+        android:showAsAction="always"
+        android:title="@string/export"/>
+
+    <item
+        android:id="@+id/menu_edit_category"
+        android:orderInCategory="102"
+        android:showAsAction="never"
+        android:title="@string/edit_category"/>
+
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="103"
+        android:showAsAction="never"
+        android:title="@string/settings"/>
+
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="104"
+        android:showAsAction="never"
+        android:title="@string/about"/>
+
+    <item
+        android:id="@+id/menu_help"
+        android:orderInCategory="105"
+        android:showAsAction="never"
+        android:title="@string/help"/>
+
+    <item
+        android:id="@+id/menu_terms_of_note"
+        android:orderInCategory="106"
+        android:showAsAction="never"
+        android:title="@string/terms_of_note"/>
+
+    <item
+        android:id="@+id/menu_copyright"
+        android:orderInCategory="107"
+        android:showAsAction="never"
+        android:title="@string/copyright"/>
+
+    <item
+        android:id="@+id/menu_version_log"
+        android:orderInCategory="108"
+        android:showAsAction="never"
+        android:title="@string/version_log"/>
+
+    <item
+        android:id="@+id/menu_exit"
+        android:orderInCategory="109"
+        android:showAsAction="never"
+        android:title="@string/exit"/>
+
+</menu>

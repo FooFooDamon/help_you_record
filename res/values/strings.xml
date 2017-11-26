@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+
+    An example of adding string items:
+
+    <string name="name_of_new_item">简体中文内容：Contents in Chinese Simplified</string>
+    <string name="cht_name_of_new_item">繁体中文内容：Contents in Chinese Traditional</string>
+    <string name="en_name_of_new_item">Contents in English</string>
+
+     -->
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+         Punctuation items
+
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+    <string name="full_stop">。</string>
+    <string name="cht_full_stop">。</string>
+    <string name="en_full_stop">.</string>
+    
+    <string name="comma">，</string>
+    <string name="cht_comma">，</string>
+    <string name="en_comma">,</string>
+    
+    <string name="semicolon">；</string>
+    <string name="cht_semicolon">；</string>
+    <string name="en_semicolon">;</string>
+    
+    <string name="exclamatory_point">！</string>
+    <string name="cht_exclamatory_point">！</string>
+    <string name="en_exclamatory_point">!</string>
+    
+    <string name="question_mark">？</string>
+    <string name="cht_question_mark">？</string>
+    <string name="en_question_mark">\?</string>
+    
+    <string name="colon">：</string>
+    <string name="cht_colon">：</string>
+    <string name="en_colon">:</string>
+    
+    <string name="ellipsis">……</string>
+    <string name="cht_ellipsis">……</string>
+    <string name="en_ellipsis">&#8230;</string>
+
+
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+         Character items
+
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+    <string name="hello_world">世界你好！</string>
+    <string name="cht_hello_world">@string/hello_world</string>
+    <string name="en_hello_world">Hello world!</string>
+    
+    <string name="empty_string"></string>
+    <string name="space"> </string>
+    
+    <string name="settings">设置</string>
+    <string name="cht_settings">設置</string>
+    <string name="en_settings">Settings</string>
+    
+    <string name="help">帮助</string>
+    <string name="cht_help">幫助</string>
+    <string name="en_help">Help</string>
+    
+    <string name="terms_of_note">注意事项</string>
+    <string name="cht_terms_of_note">注意事項</string>
+    <string name="en_terms_of_note">Terms of Note</string>
+    
+    <string name="about">关于</string>
+    <string name="cht_about">關於</string>
+    <string name="en_about">About</string>
+    
+    <string name="about_this_app">关于本软件</string>
+    <string name="cht_about_this_app">關於本軟體</string>
+    <string name="en_about_this_app">About This APP</string>
+    
+    <string name="copyright">版权</string>
+    <string name="cht_copyright">版權</string>
+    <string name="en_copyright">Copyright</string>
+    
+    <string name="version_log">版本日志</string>
+    <string name="cht_version_log">版本日志</string>
+    <string name="en_version_log">Version Log</string>
+    
+    <string name="exit">退出</string>
+    <string name="cht_exit">退出</string>
+    <string name="en_exit">Exit</string>
+    
+    <string name="name">名称</string>
+    <string name="cht_name">名稱</string>
+    <string name="en_name">Name</string>
+    
+    <string name="alias">别名</string>
+    <string name="cht_alias">別名</string>
+    <string name="en_alias">Alias</string>
+    
+    <string name="app_name_key">软件名称</string>
+    <string name="cht_app_name_key">軟體名稱</string>
+    <string name="en_app_name_key">APP Name</string>
+    
+    <string name="author">作者</string>
+    <string name="cht_author">作者</string>
+    <string name="en_author">Author</string>
+    
+    <string name="app_version">软件版本</string>
+    <string name="cht_app_version">軟體版本</string>
+    <string name="en_app_version">APP Version</string>
+    
+    <string name="usage">用途</string>
+    <string name="cht_usage">用途</string>
+    <string name="en_usage">Usage</string>
+    
+    <string name="remarks">备注</string>
+    <string name="cht_remarks">備注</string>
+    <string name="en_remarks">Remarks</string>
+    
+    <string name="save">保存</string>
+    <string name="cht_save">保存</string>
+    <string name="en_save">Save</string>
+    
+    <string name="save_successfully">保存成功</string>
+    <string name="cht_save_successfully">保存成功</string>
+    <string name="en_save_successfully">Saved Successfully</string>
+    
+    <string name="save_failed">保存失败</string>
+    <string name="cht_save_failed">保存失敗</string>
+    <string name="en_save_failed">Saved Unsuccessfully</string>
+    
+    <string name="refresh">刷新</string>
+    <string name="cht_refresh">刷新</string>
+    <string name="en_refresh">Refresh</string>
+    
+    <string name="yes">是</string>
+    <string name="cht_yes">是</string>
+    <string name="en_yes">Yes</string>
+    
+    <string name="no">否</string>
+    <string name="cht_no">否</string>
+    <string name="en_no">No</string>
+    
+    <string name="confirm">确定</string>
+    <string name="cht_confirm">確定</string>
+    <string name="en_confirm">Confirm</string>
+    
+    <string name="ok">好</string>
+    <string name="cht_ok">好</string>
+    <string name="en_ok">OK</string>
+    
+    <string name="cancal">取消</string>
+    <string name="cht_cancal">取消</string>
+    <string name="en_cancal">Cancel</string>
+    
+    <string name="successful">成功</string>
+    <string name="cht_successful">成功</string>
+    <string name="en_successful">Successful</string>
+    
+    <string name="failed">失败</string>
+    <string name="cht_failed">失敗</string>
+    <string name="en_failed">Failed</string>
+    
+    <string name="agree">同意</string>
+    <string name="cht_agree">同意</string>
+    <string name="en_agree">Agree</string>
+    
+    <string name="not_agree">不同意</string>
+    <string name="cht_not_agree">不同意</string>
+    <string name="en_not_agree">Do Not Agree</string>
+    
+    <string name="confirm_selecttions">确认选择</string>
+    <string name="cht_confirm_selecttions">確認選擇</string>
+    <string name="en_confirm_selecttions">Confirm Selecttion(s)</string>
+    
+    <string name="cancel_selections">取消选择</string>
+    <string name="cht_cancel_selections">取消選擇</string>
+    <string name="en_cancel_selections">Cancel Selection(s)</string>
+    
+    <string name="redo">重做</string>
+    <string name="cht_redo">重做</string>
+    <string name="en_redo">Redo</string>
+    
+    <string name="undo">撤销</string>
+    <string name="cht_undo">撤銷</string>
+    <string name="en_undo">Undo</string>
+    
+    <string name="query">查询</string>
+    <string name="cht_query">查詢</string>
+    <string name="en_query">Query</string>
+    
+    <string name="query_result">查询结果</string>
+    <string name="cht_query_result">查詢結果</string>
+    <string name="en_query_result">Query Result</string>
+    
+    <string name="search">查找</string>
+    <string name="cht_search">查找</string>
+    <string name="en_search">Search</string>
+    
+    <string name="search_result">查找结果</string>
+    <string name="cht_search_result">查找結果</string>
+    <string name="en_search_result">Query Result</string>
+    
+    <string name="not_found">找不到</string>
+    <string name="cht_not_found">找不到</string>
+    <string name="en_not_found">Not Found</string>
+    
+    <string name="can_not_find">找不到</string>
+    <string name="cht_can_not_find">找不到</string>
+    <string name="en_can_not_find">Can Not Find</string>
+    
+    <string name="none">无</string>
+    <string name="cht_none">無</string>
+    <string name="en_none">None</string>
+    
+    <string name="unknown">未知</string>
+    <string name="cht_unknown">未知</string>
+    <string name="en_unknown">Unknown</string>
+    
+    <string name="undefined">未定义</string>
+    <string name="cht_undefined">未定義</string>
+    <string name="en_undefined">Undefined</string>
+    
+    <string name="customized">自定义</string>
+    <string name="cht_customized">自定義</string>
+    <string name="en_customized">Customized</string>
+    
+    <string name="quantity">数目</string>
+    <string name="cht_quantity">數目</string>
+    <string name="en_quantity">Quantity</string>
+    
+    <string name="add">添加</string>
+    <string name="cht_add">添加</string>
+    <string name="en_add">Add</string>
+    
+    <string name="delete">删除</string>
+    <string name="cht_delete">刪除</string>
+    <string name="en_delete">Delete</string>
+    
+    <string name="select">选择</string>
+    <string name="cht_select">選擇</string>
+    <string name="en_select">Select</string>
+    
+    <string name="please_select">请选择</string>
+    <string name="cht_please_select">請選擇</string>
+    <string name="en_please_select">Please Select</string>
+    
+    <string name="please_select_or_customize">请选择或自定义</string>
+    <string name="cht_please_select_or_customize">請選擇或自定義</string>
+    <string name="en_please_select_or_customize">Please Select or Customize</string>
+    
+    <string name="edit">编辑</string>
+    <string name="cht_edit">編輯</string>
+    <string name="en_edit">Edit</string>
+    
+    <string name="chs_import">导入</string>
+    <string name="cht_import">導入</string>
+    <string name="en_import">Import</string>
+    
+    <string name="input">输入</string>
+    <string name="cht_input">輸入</string>
+    <string name="en_input">Input</string>
+    
+    <string name="export">导出</string>
+    <string name="cht_export">導出</string>
+    <string name="en_export">Export</string>
+    
+    <string name="output">输出</string>
+    <string name="cht_output">輸出</string>
+    <string name="en_output">Output</string>
+    
+    <string name="sys_app">系统应用程序</string>
+    <string name="cht_sys_app">系統應用程式</string>
+    <string name="en_sys_app">System Application(s)</string>
+    
+    <string name="user_app">用户应用程序</string>
+    <string name="cht_user_app">用戶應用程式</string>
+    <string name="en_user_app">User Application(s)</string>
+    
+    <string name="function_not_implemented">功能待实现</string>
+    <string name="cht_function_not_implemented">功能待實現</string>
+    <string name="en_function_not_implemented">Function Not Implemented</string>
+    
+    <string name="to_be_supplemented">待补充</string>
+    <string name="cht_to_be_supplemented">待補充</string>
+    <string name="en_to_be_supplemented">To Be Supplemented</string>
+    
+    <string name="please_look_forward_to_it">敬请期待</string>
+    <string name="cht_please_look_forward_to_it">敬請期待</string>
+    <string name="en_please_look_forward_to_it">Please look forward to it</string>
+    
+    <string name="apply_to_current">应用于当前</string>
+    <string name="cht_apply_to_current">應用於當前</string>
+    <string name="en_apply_to_current">Apply to Current</string>
+    
+    <string name="apply_to_all">应用于所有</string>
+    <string name="cht_apply_to_all">應用於所有</string>
+    <string name="en_apply_to_all">Apply to All</string>
+    
+    <string name="not_limited">不限</string>
+    <string name="cht_not_limited">不限</string>
+    <string name="en_not_limited">Not Limited</string>
+    
+    <string name="match_mode">匹配模式</string>
+    <string name="cht_match_mode">匹配模式</string>
+    <string name="en_match_mode">Match Mode</string>
+    
+    <string name="white_list_mode">白名单模式</string>
+    <string name="cht_white_list_mode">白名單模式</string>
+    <string name="en_white_list_mode">White List Mode</string>
+    
+    <string name="config_whilte_list">配置白名单</string>
+    <string name="cht_config_whilte_list">配置白名單</string>
+    <string name="en_config_whilte_list">Configure Whilte List</string>
+    
+    <string name="black_list_mode">黑名单模式</string>
+    <string name="cht_black_list_mode">黑名單模式</string>
+    <string name="en_black_list_mode">Black List Mode</string>
+    
+    <string name="config_black_list">配置黑名单</string>
+    <string name="cht_config_black_list">配置黑名單</string>
+    <string name="en_config_black_list">Configure Black List</string>
+    
+    <string name="collision_handling">冲突处理</string>
+    <string name="cht_collision_handling">沖突處理</string>
+    <string name="en_collision_handling">Collision Handling</string>
+    
+    <string name="white_list_first">白名单优先</string>
+    <string name="cht_white_list_first">白名單優先</string>
+    <string name="en_white_list_first">White List First</string>
+    
+    <string name="black_list_first">黑名单优先</string>
+    <string name="cht_black_list_first">黑名單優先</string>
+    <string name="en_black_list_first">Black List First</string>
+    
+    <string name="config_details">配置详情</string>
+    <string name="cht_config_details">配置詳情</string>
+    <string name="en_config_details">Configuration Details</string>
+    
+    <string name="config_successful">配置成功</string>
+    <string name="cht_config_successful">配置成功</string>
+    <string name="en_config_successful">Configuration Successful</string>
+    
+    <string name="match_keywords">匹配关键字</string>
+    <string name="cht_match_keywords">匹配關鍵字</string>
+    <string name="en_match_keywords">Match Keywords</string>
+    
+    <string name="db_error">数据库操作错误</string>
+    <string name="cht_db_error">數據庫操作錯誤</string>
+    <string name="en_db_error">Database Error</string>
+    
+    <string name="data_init_error">数据初始化失败</string>
+    <string name="cht_data_init_error">數據初始化失敗</string>
+    <string name="en_data_init_error">Data Initialization Error</string>
+
+    <!--
+         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         Customized items should be put below!
+         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    -->
+    
+    <string name="app_name">帮你记录</string>
+    <string name="cht_app_name">幫你記錄</string>
+    <string name="en_app_name">Help You Record</string>
+    
+    <string name="author_info">文雄昌（udc577@126.com）</string>
+    <string name="cht_author_info">文雄昌（udc577@126.com）</string>
+    <string name="en_author_info">Wen Xiongchang(udc577@126.com)</string>
+    
+    <string name="copyright_info">Copyright © 2017 文雄昌。版权所有。</string>
+    <string name="cht_copyright_info">Copyright © 2017 文雄昌。版權所有。</string>
+    <string name="en_copyright_info">Copyright © 2017 Wen Xiongchang. All Rights Reserved.</string>
+    
+    <string name="help_info_for_main_page">
+        1、首次使用，请别嫌麻烦，一定要先阅读注意事项，以及设置好
+        数据库文件存放位置（可选操作）。如果不知道放什么位置，可
+        使用默认位置。\n\n
+        2、其余帮助信息，详见各操作页面的帮助菜单。\n\n
+        3、有任何意见或建议，可通过“关于”页内的联系信息联系作者，
+        但谢绝谩骂！
+    </string>
+    
+    <string name="terms_of_note_contents">
+        1、本软件在安卓版本4.2.2和5.1、屏幕5寸的手机上运行良好，
+        低版本、小屏手机运行该软件可能有界面错乱的现象，请尽量避免
+        使用此类手机。\n\n
+        2、建议定期手动备份数据库文件。备份时直接拷贝db文件，恢复
+        时直接将db拷回覆盖即可。
+    </string>
+    
+    <string name="version_log_contents">
+        ---- V1.00.00 2017/11/26\n
+        1、11/25项目启动。\n
+        2、截至11/26完成基本功能。\n\n
+    </string>
+    
+    <string name="usage_contents">
+        为用户提供一个新的辅助手段，可便捷地记录个人的日常事项及
+        知识要点，并可在需要之时快速查询，有助于管理日常事务及
+        建立个人的知识体系。
+    </string>
+    
+    <string name="remarks_contents">
+        功能改进及使用说明逐步完善中……
+    </string>
+    
+    <string name="settings_not_implemented">
+        设置功能暂未实现。数据库文件放在默认位置，进入机身存储或SD
+        卡的根目录即可看到一个与本APP同名的db文件。
+    </string>
+    
+    <string name="item_details">事项详情</string>
+    <string name="target_item">目标事项</string>
+    <string name="new_item">新事项</string>
+    <string name="add_item">新增事项</string>
+    <string name="hint_after_adding_item">
+        已成功添加新事项，请在名称栏输入“新事项”、种类栏选择“不限”
+        进行查询并编辑详细的事项信息。
+    </string>
+    <string name="alert_reusing_item_title">
+        已存在未使用的新事项信息
+    </string>
+    <string name="alert_reusing_item_contents">
+        数据库已存在一个“新事项”，可在名称栏输入“新事项”、种类栏
+        选择“不限”查询出该事项详细页面，对其进行重命名，并补全
+        其余信息。
+    </string>
+    
+    <string name="alert_failed_to_update">更新信息出错</string>
+    <string name="alert_checking_input">
+        请检查输入的信息是否有效，或与现有信息冲突（例如名称相同等）。
+    </string>
+    
+    <string name="asking_after_save_operation">
+        数据已提交并保存成功，是否退出当前页面？退出请点击
+        “确定”，继续留在当前页面请点击“取消”。
+    </string>
+    
+    <string name="click_to_restore">点击可恢复</string>
+    <string name="running_in_background">后台运行中</string>
+    
+    <string name="hint_null_for_querying_all">不填则全查</string>
+    
+    <string name="hint_add_when_not_found">
+        找不到所指定的条目，请确认输入是否有误，或通过对应的
+        添加/新增菜单/按钮进行新增。
+    </string>
+    
+    <string name="hint_db_creating">找不到数据库文件，创建中……</string>
+    <string name="hint_db_created">数据库文件创建完毕！</string>
+    
+    <string name="category">种类</string>
+    <string name="new_category">新种类</string>
+    <string name="add_category">新增种类</string>
+    <string name="edit_category">编辑种类</string>
+    <string name="refresh_category">刷新种类</string>
+    <string name="hint_after_adding_category">
+        已成功添加新种类，请在名称栏输入“新种类”进行查询并编辑详细的种类信息。
+    </string>
+    <string name="alert_reusing_category_title">
+        已存在未使用的新种类信息
+    </string>
+    <string name="alert_reusing_category_contents">
+        数据库已存在一个“新种类”，可在名称栏输入“新种类”查询出该种类详细页面，
+        对其进行重命名，并补全其余信息。
+    </string>
+    
+    <string name="brief">摘要</string>
+    <string name="details">详情</string>
+	
+    <string name="sql_create_categories_table">
+        CREATE TABLE `categories` (
+			`category_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+			`name`	TEXT NOT NULL UNIQUE,
+			`remarks`	TEXT
+		)
+    </string>
+    
+    <string name="sql_make_categories_data">
+        insert into
+		categories(name)
+		values(?)
+    </string>
+    
+    <string name="sql_query_category_names">
+        select name 
+		from categories
+		order by category_id asc
+    </string>
+    
+    <string name="sql_query_unlimited_category_records">
+        select category_id, name
+        from categories
+        order by category_id asc
+        limit 1000
+    </string>
+    
+    <string name="sql_query_category_records_by_name">
+        select category_id, name
+        from categories
+        where name like ?
+        order by category_id asc
+        limit 1000
+    </string>
+    
+    <string name="sql_query_category_details_by_id">
+        select name, remarks
+		from categories
+		where category_id = ?
+    </string>
+    
+    <string name="sql_update_category_details_by_id">
+        update `categories`
+		set `name` = ?, `remarks` = ?
+		where `category_id` = ?
+    </string>
+    
+    <string name="sql_create_items_table" formatted="false">
+        CREATE TABLE `items` (
+			`item_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+			`name`	TEXT NOT NULL UNIQUE,
+			`category`	INTEGER NOT NULL,
+			`brief`	TEXT,
+			`details`	TEXT,
+			`remarks`	TEXT,
+			`createtime`	timestamp DEFAULT(datetime(\'now\',\'localtime\')),
+			`updatetime`	timestamp DEFAULT(datetime(\'now\',\'localtime\'))
+		)
+    </string>
+    
+    <string name="sql_make_items_data">
+        insert into
+		items(name, category, details, createtime, updatetime)
+		values(?, ?, ?, datetime(\'now\',\'localtime\'), datetime(\'now\',\'localtime\'))
+    </string>
+    
+    <string name="sql_query_unlimited_items">
+        select item_id, name
+        from items
+        order by category asc, updatetime desc
+        limit 1000
+    </string>
+    
+    <string name="sql_query_items_by_name">
+        select item_id, name
+        from items
+        where name like ?
+        order by category asc, updatetime desc
+        limit 1000
+    </string>
+    
+    <string name="sql_query_items_by_category">
+        select item_id, name
+        from items
+        where category = ?
+        order by updatetime desc
+        limit 1000
+    </string>
+    
+    <string name="sql_query_items_by_name_and_category">
+        select item_id, name
+        from items
+        where name like ? and category = ?
+        order by updatetime desc
+        limit 1000
+    </string>
+    
+    <string name="sql_query_item_details_by_id">
+        select name, category,
+			brief, details,
+			remarks
+		from items
+		where item_id = ?
+    </string>
+    
+    <string name="sql_update_item_details_by_id">
+        update `items`
+		set `name` = ?, `category` = ?,
+			`brief` = ?, `details` = ?,
+			`remarks` = ?, `updatetime` = datetime(\'now\',\'localtime\')
+		where `item_id` = ?
+    </string>
+
+</resources>

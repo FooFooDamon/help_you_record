@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.project.help_you_record"
+    android:versionCode="1"
+    android:versionName="V1.00.00" >
+
+    <uses-sdk
+        android:minSdkVersion="17"
+        android:targetSdkVersion="22" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="false"
+        android:fitsSystemWindows="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/about_this_app"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:launchMode="singleInstance"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="sensor" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.help_you_record.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ItemDetailsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.help_you_record.MainActivity" />
+        </activity>
+        <activity
+            android:name=".CategoryQueryEntryActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.help_you_record.MainActivity" />
+        </activity>
+        <activity
+            android:name=".CategoryDetailsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".CategoryQueryEntryActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.project.help_you_record.CategoryQueryEntryActivity" />
+        </activity>
+    </application>
+
+</manifest>

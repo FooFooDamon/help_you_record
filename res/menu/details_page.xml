@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.project.help_you_record.ItemDetailsActivity" >
+
+    <item
+        android:id="@+id/menu_edit"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/edit"/>
+
+    <item
+        android:id="@+id/menu_save"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:title="@string/save"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/menu_cancel"
+        android:orderInCategory="102"
+        android:showAsAction="ifRoom"
+        android:title="@string/cancal"
+        android:visible="false" />
+
+</menu>
