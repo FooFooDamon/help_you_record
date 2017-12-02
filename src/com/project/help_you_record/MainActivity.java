@@ -1,3 +1,31 @@
+/*
+ * Copyright (c) 2017, Wen Xiongchang <udc577 at 126 dot com>
+ * All rights reserved.
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any
+ * damages arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any
+ * purpose, including commercial applications, and to alter it and
+ * redistribute it freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must
+ * not claim that you wrote the original software. If you use this
+ * software in a product, an acknowledgment in the product documentation
+ * would be appreciated but is not required.
+ *
+ * 2. Altered source versions must be plainly marked as such, and
+ * must not be misrepresented as being the original software.
+ *
+ * 3. This notice may not be removed or altered from any source
+ * distribution.
+ */
+
+// NOTE: The original author also uses (short/code) names listed below,
+//       for convenience or for a certain purpose, at different places:
+//       wenxiongchang, wxc, Damon Wen, udc577
+
 package com.project.help_you_record;
 
 import java.util.ArrayList;
@@ -33,307 +61,356 @@ import com.android_assistant.ResourceExports;
 import com.android_assistant.Version;
 
 public class MainActivity extends Activity
-	implements OnItemClickListener {
-	
-	private DbHelper mDbHelper = null;
-	
-	@SuppressWarnings("deprecation")
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_query_page);
-		getActionBar().setBackgroundDrawable(
-			getResources().getDrawable(R.drawable.default_action_bar_style));
-		
-		mDbHelper = new DbHelper(this);
-		
-		try {
-			// WARNING: DO NOT use it here, otherwise init() will make a wrong decision
-			//     about initializing database.
-			//mDbHelper.openOrCreate();
-			
-			mDbHelper.init();
-		} catch (Exception e) {
-			Hint.alert(this, getString(R.string.data_init_error), e.getMessage(), new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					MainActivity.this.finish();
-				}
-			});
-		}
-		
-		mDbHelper.fillCategorySpinner(R.id.spn_category);
-		
-		if (Version.SDK <= Version.getDeprecatedVersionUpperBound())
-			doExtraJobsForLowerVersions();
-		
-		Button btnAdd = (Button) findViewById(R.id.btn_add);
-		
-		btnAdd.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String sqlCheckItem = getString(R.string.sql_query_items_by_name);
-				String newItem = getString(R.string.new_item);
-				String[] sqlArgs = (new String[]{ newItem });
-				SQLiteDatabase db = mDbHelper.getDatabase();
-				Cursor c = db.rawQuery(sqlCheckItem, sqlArgs);
-				
-				if (c.moveToNext()) {
-					Hint.alert(MainActivity.this, R.string.alert_reusing_item_title, R.string.alert_reusing_item_contents);
-					c.close();
-					return;
-				}
-				c.close();
-				
-				String sqlAddItem = getString(R.string.sql_make_items_data);
-				
-				db.execSQL(sqlAddItem, new String[] { newItem, String.valueOf(0), "" });
-				Hint.alert(MainActivity.this, getString(R.string.add_item) + getString(R.string.successful),
-					getString(R.string.hint_after_adding_item));
-			}
-		});
-		
-		Button btnRefresh = (Button) findViewById(R.id.btn_refresh);
-		
-		btnRefresh.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				mDbHelper.fillCategorySpinner(R.id.spn_category);
-				Hint.shortToast(MainActivity.this, getString(R.string.refresh_category)
-					+ getString(R.string.successful));
-			}
-		});
-	}
-	
-	@Override
-	protected void onDestroy() {
-		if (null != mDbHelper)
-			mDbHelper.close();
-		
-		App.cancelNotification(this);
-		super.onDestroy();
-	}
-	
-	@Override
-	protected void onPause() {
-		if (App.isInBackground(this)) {
-			String appName = App.getAppName(this);
+    implements OnItemClickListener {
 
-			App.displayNotification(this, appName, getString(R.string.click_to_restore),
-				appName + getString(R.string.running_in_background), R.drawable.ic_launcher);
-		}
-		super.onPause();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		App.cancelNotification(this);
-	}
+    private DbHelper mDbHelper = null;
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.brief_page, menu);
-		return true;
-	}
+    private Intent mIntentCategoryQueryEntry = null;
+    private Intent mIntentAbout = null;
+    private Intent mIntentItemDetails = null;
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		
-		if (R.id.menu_query == id)
-			queryItems();
-		else if (R.id.menu_export == id)
-			; // TODO: ...
-		else if (R.id.menu_edit_category == id)
-			startActivity(new Intent(this, CategoryQueryEntryActivity.class));
-		else if (R.id.menu_settings == id){
-			Hint.alert(this, ResourceExports.getString(this, R.array.function_not_implemented),
-				getString(R.string.settings_not_implemented));
-			// startActivity(new Intent(this, SettingsActivity.class));
-		}
-		else if (R.id.menu_about == id)
-			startActivity(new Intent(this, AboutActivity.class));
-		else if (R.id.menu_help == id)
-			App.showHelpText(this, getString(R.string.help_info_for_main_page));
-		else if (R.id.menu_terms_of_note == id)
-			Hint.alert(this, R.string.terms_of_note, R.string.terms_of_note_contents);
-		else if (R.id.menu_copyright == id)
-			Hint.alert(this, getString(R.string.copyright),
-				getString(R.string.copyright_info) + "\n\n"
-				+ getString(R.string.cht_copyright_info) + "\n\n"
-				+ getString(R.string.en_copyright_info));
-		else if (R.id.menu_version_log == id)
-			Hint.alert(this, R.string.version_log, R.string.version_log_contents);
-		else if (R.id.menu_exit == id)
-			App.exit(this);
-		else
-			; // more things in future ...
-		
-		return super.onOptionsItemSelected(item);
-	}
+    private DialogInterface.OnClickListener mAddItemAction = null;
+    private View.OnClickListener mOnAddButtonClicked = null;
+    private View.OnClickListener mOnFreshButtonClicked = null;
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_query_page);
+        getActionBar().setBackgroundDrawable(
+            getResources().getDrawable(R.drawable.default_action_bar_style));
 
-		if (KeyEvent.KEYCODE_BACK != keyCode)
-			return super.onKeyDown(keyCode, event);
+        initResources();
 
-		App.moveTaskToBack(this, App.getAppName(this), true, R.drawable.ic_launcher);
+        try {
+            // WARNING: DO NOT use it here, otherwise init() will make a wrong decision
+            //     about initializing database.
+            //mDbHelper.openOrCreate();
 
-		return true;
-	}
+            mDbHelper.init();
+        } catch (Exception e) {
+            Hint.alert(this, getString(R.string.data_init_error), e.getMessage(), new OnClickListener() {
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-		ListView listView = (ListView) parent;
-		ItemBrief item = (ItemBrief) listView.getItemAtPosition(pos);
-		final Intent intent = new Intent(this, ItemDetailsActivity.class);
-		
-		intent.putExtra("id", item.id);
-		intent.putExtra("name", item.name);
-		startActivity(intent);
-	}
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MainActivity.this.finish();
+                }
+            });
+        }
 
-	private void doExtraJobsForLowerVersions() {
-		com.android_assistant.TextView.setDefaultTextShadow(
-			(TextView) findViewById(R.id.txv_name));
-		
-		com.android_assistant.TextView.setDefaultTextShadow(
-			(TextView) findViewById(R.id.txv_category));
-	}
-	
-	private void queryItems() {
-		ArrayList<ItemBrief> itemList = new ArrayList<ItemBrief>();
-		EditText etxName = (EditText) findViewById(R.id.etx_name);
-		String itemName = etxName.getText().toString();
-		Spinner spnCategory = (Spinner) findViewById(R.id.spn_category);
-		int selectedCategoryPos = spnCategory.getSelectedItemPosition();
-		int sqlResId = (selectedCategoryPos > 0)
-			? ((itemName.length() > 0)
-				? R.string.sql_query_items_by_name_and_category
-				: R.string.sql_query_items_by_category)
-			: ((itemName.length() > 0)
-				? R.string.sql_query_items_by_name
-				: R.string.sql_query_unlimited_items);
-		String sql = getString(sqlResId);
-		String[] sqlArgs = (selectedCategoryPos > 0)
-			? ((itemName.length() > 0)
-				? (new String[]{ "%" + itemName + "%", String.valueOf(selectedCategoryPos)})
-				: (new String[]{ String.valueOf(selectedCategoryPos) }) )
-			: ((itemName.length() > 0)
-				? (new String[]{ "%" + itemName + "%" })
-				: null);
-		Cursor c = mDbHelper.getDatabase().rawQuery(sql, sqlArgs);
-		
-		while (c.moveToNext()) {
-			itemList.add(new ItemBrief(String.valueOf(c.getInt(c.getColumnIndex("item_id"))),
-				c.getString(c.getColumnIndex("name"))));
-		}
-		c.close();
-		
-		int resultCount = itemList.size();
-		
-		if (resultCount <= 0)
-			Hint.alert(this, getString(R.string.target_item) + " " + getString(R.string.not_found),
-				getString(R.string.hint_add_when_not_found));
-		
-		Hint.shortToast(this, ResourceExports.getString(this, R.array.query_result)
-			+ ResourceExports.getString(this, R.array.quantity)
-			+ ": " + resultCount);
-		
-		ListView lsvQueryResult = (ListView) findViewById(R.id.lsv_query_items);
-		ItemBriefAdapter adapter = new ItemBriefAdapter(this, itemList);
+        mDbHelper.fillCategorySpinner(R.id.spn_category);
 
-		lsvQueryResult.setAdapter(adapter);
-		lsvQueryResult.setOnItemClickListener(this);
-	}
-	
-	private class ItemBrief {
-		public String id;
-		public String name;
+        if (Version.SDK <= Version.getDeprecatedVersionUpperBound())
+            doExtraJobsForLowerVersions();
 
-		public ItemBrief() {}
+        Button btnAdd = (Button) findViewById(R.id.btn_add);
 
-		public ItemBrief(String id, String name) {
-			this.id = id;
-			this.name = name;
-		}
-	}
-	
-	private class ItemBriefAdapter extends BaseAdapter {
+        btnAdd.setOnClickListener(mOnAddButtonClicked);
 
-		private final Context mContext;
-		private final List<ItemBrief> mItemList;
-		private final LayoutInflater mInflater;
+        Button btnRefresh = (Button) findViewById(R.id.btn_refresh);
 
-		public ItemBriefAdapter(Context context, List<ItemBrief> itemList) {
-			super();
-			this.mItemList = itemList;
-			this.mContext = context;
-			mInflater = LayoutInflater.from(context);
-		}
+        btnRefresh.setOnClickListener(mOnFreshButtonClicked);
+    }
 
-		@Override
-		public int getCount() {
-			return mItemList.size();
-		}
+    @Override
+    protected void onDestroy() {
+        if (null != mDbHelper)
+            mDbHelper.close();
 
-		@Override
-		public Object getItem(int position) {
-			return mItemList.get(position);
-		}
+        App.cancelNotification(this);
+        super.onDestroy();
+    }
 
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
+    @Override
+    protected void onPause() {
+        if (App.isInBackground(this)) {
+            String appName = App.getAppName(this);
 
-		@Override
-		public View getView(final int position, View convertView,
-				ViewGroup parent) {
+            App.displayNotification(this, appName, getString(R.string.click_to_restore),
+                appName + getString(R.string.running_in_background), R.drawable.ic_launcher);
+        }
+        super.onPause();
+    }
 
-			ViewHolder holder = null;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.cancelNotification(this);
+    }
 
-			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = mInflater.inflate(R.layout.brief, null);
-				holder.checkBox = (CheckBox) convertView.findViewById(R.id.chkbox_brief);
-				holder.id = (TextView) convertView.findViewById(R.id.txv_brief_id);
-				holder.name = (TextView) convertView.findViewById(R.id.txv_brief_name);
-				convertView.setTag(holder);
-			}
-			else {
-				holder = (ViewHolder) convertView.getTag();
-			}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.brief_page, menu);
+        return true;
+    }
 
-			ItemBrief item = mItemList.get(position);
-			
-			holder.checkBox.setVisibility(TextView.GONE);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-			holder.id.setText(item.id);
-			com.android_assistant.TextView.setDefaultTextShadow(holder.id);
-			holder.id.setLineSpacing(0, 1.5F);
-			holder.id.setVisibility(TextView.GONE);
-			
-			holder.name.setText(item.name);
-			com.android_assistant.TextView.setDefaultTextShadow(holder.name);
-			holder.name.setLineSpacing(0, 1.5F);
+        if (R.id.menu_query == id)
+            queryItems();
+        else if (R.id.menu_export == id)
+            ; // TODO: ...
+        else if (R.id.menu_edit_category == id)
+            startActivity(mIntentCategoryQueryEntry);
+        else if (R.id.menu_settings == id){
+            Hint.alert(this, ResourceExports.getString(this, R.array.function_not_implemented),
+                getString(R.string.settings_not_implemented));
+            // startActivity(new Intent(this, SettingsActivity.class));
+        }
+        else if (R.id.menu_about == id)
+            startActivity(mIntentAbout);
+        else if (R.id.menu_help == id)
+            App.showHelpText(this, getString(R.string.help_info_for_main_page));
+        else if (R.id.menu_terms_of_note == id)
+            Hint.alert(this, R.string.terms_of_note, R.string.terms_of_note_contents);
+        else if (R.id.menu_copyright == id)
+            Hint.alert(this, getString(R.string.copyright),
+                getString(R.string.copyright_info) + "\n\n"
+                + getString(R.string.cht_copyright_info) + "\n\n"
+                + getString(R.string.en_copyright_info));
+        else if (R.id.menu_version_log == id)
+            Hint.alert(this, R.string.version_log, R.string.version_log_contents);
+        else if (R.id.menu_exit == id)
+            App.exit(this);
+        else
+            ; // more things in future ...
 
-			return convertView;
-		}
+        return super.onOptionsItemSelected(item);
+    }
 
-		private class ViewHolder {
-			CheckBox checkBox;
-			TextView id;
-			TextView name;
-		}
-	}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (KeyEvent.KEYCODE_BACK != keyCode)
+            return super.onKeyDown(keyCode, event);
+
+        App.moveTaskToBack(this, App.getAppName(this), true, R.drawable.ic_launcher);
+
+        return true;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+        ListView listView = (ListView) parent;
+        ItemBrief item = (ItemBrief) listView.getItemAtPosition(pos);
+
+        mIntentItemDetails.putExtra("id", item.id);
+        mIntentItemDetails.putExtra("name", item.name);
+        startActivity(mIntentItemDetails);
+    }
+
+    private void initResources() {
+        if (null == mDbHelper)
+            mDbHelper = new DbHelper(this);
+
+        if (null == mIntentCategoryQueryEntry)
+            mIntentCategoryQueryEntry = new Intent(this, CategoryQueryEntryActivity.class);
+
+        if (null == mIntentAbout)
+            mIntentAbout = new Intent(this, AboutActivity.class);
+
+        if (null == mIntentItemDetails)
+            mIntentItemDetails = new Intent(this, ItemDetailsActivity.class);
+
+        if (null == mAddItemAction) {
+            mAddItemAction = new OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String sqlCheckItem = getString(R.string.sql_query_items_by_name);
+                    String newItem = getString(R.string.new_item);
+                    String[] sqlArgs = (new String[]{ newItem });
+                    SQLiteDatabase db = mDbHelper.getDatabase();
+                    Cursor c = db.rawQuery(sqlCheckItem, sqlArgs);
+
+                    if (c.moveToNext()) {
+                        Hint.alert(MainActivity.this, R.string.alert_reusing_item_title, R.string.alert_reusing_item_contents);
+                        c.close();
+                        return;
+                    }
+                    c.close();
+
+                    String sqlAddItem = getString(R.string.sql_make_items_data);
+                    int categorySpinnerPos = 1;
+
+                    db.execSQL(sqlAddItem, new String[] { newItem, String.valueOf(categorySpinnerPos), "" });
+
+                    Hint.alert(MainActivity.this, getString(R.string.add_item) + getString(R.string.successful),
+                        getString(R.string.hint_after_adding_item));
+
+                    EditText etxName = (EditText) findViewById(R.id.etx_name);
+                    Spinner spnCategory = (Spinner) findViewById(R.id.spn_category);
+
+                    etxName.setText(newItem);
+                    spnCategory.setSelection(categorySpinnerPos);
+                    queryItems();
+                }
+            };
+        }
+
+        if (null == mOnAddButtonClicked) {
+            mOnAddButtonClicked = new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Hint.alert(MainActivity.this, R.string.asking_before_adding_item, R.string.confirm_or_cancel_guide,
+                        mAddItemAction, null);
+                }
+            };
+        }
+
+        if (null == mOnFreshButtonClicked) {
+            mOnFreshButtonClicked = new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mDbHelper.fillCategorySpinner(R.id.spn_category);
+                    Hint.shortToast(MainActivity.this, getString(R.string.refresh_category)
+                        + getString(R.string.successful));
+                }
+            };
+        }
+    }
+
+    private void doExtraJobsForLowerVersions() {
+        com.android_assistant.TextView.setDefaultTextShadow(
+            (TextView) findViewById(R.id.txv_name));
+
+        com.android_assistant.TextView.setDefaultTextShadow(
+            (TextView) findViewById(R.id.txv_category));
+    }
+
+    private void queryItems() {
+        ArrayList<ItemBrief> itemList = new ArrayList<ItemBrief>();
+        EditText etxName = (EditText) findViewById(R.id.etx_name);
+        String itemName = etxName.getText().toString();
+        Spinner spnCategory = (Spinner) findViewById(R.id.spn_category);
+        int selectedCategoryPos = spnCategory.getSelectedItemPosition();
+        int sqlResId = (selectedCategoryPos > 0)
+            ? ((itemName.length() > 0)
+                ? R.string.sql_query_items_by_name_and_category
+                : R.string.sql_query_items_by_category)
+            : ((itemName.length() > 0)
+                ? R.string.sql_query_items_by_name
+                : R.string.sql_query_unlimited_items);
+        String sql = getString(sqlResId);
+        String[] sqlArgs = (selectedCategoryPos > 0)
+            ? ((itemName.length() > 0)
+                ? (new String[]{ "%" + itemName + "%", String.valueOf(selectedCategoryPos)})
+                : (new String[]{ String.valueOf(selectedCategoryPos) }) )
+            : ((itemName.length() > 0)
+                ? (new String[]{ "%" + itemName + "%" })
+                : null);
+        Cursor c = mDbHelper.getDatabase().rawQuery(sql, sqlArgs);
+
+        while (c.moveToNext()) {
+            itemList.add(new ItemBrief(String.valueOf(c.getInt(c.getColumnIndex("item_id"))),
+                c.getString(c.getColumnIndex("name"))));
+        }
+        c.close();
+
+        int resultCount = itemList.size();
+
+        if (resultCount <= 0)
+            Hint.alert(this, getString(R.string.target_item) + " " + getString(R.string.not_found),
+                getString(R.string.hint_add_when_not_found));
+
+        Hint.shortToast(this, ResourceExports.getString(this, R.array.query_result)
+            + ResourceExports.getString(this, R.array.quantity)
+            + ": " + resultCount);
+
+        ListView lsvQueryResult = (ListView) findViewById(R.id.lsv_query_items);
+        ItemBriefAdapter adapter = new ItemBriefAdapter(this, itemList);
+
+        lsvQueryResult.setAdapter(adapter);
+        lsvQueryResult.setOnItemClickListener(this);
+    }
+
+    private class ItemBrief {
+        public String id;
+        public String name;
+
+        public ItemBrief() {}
+
+        public ItemBrief(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
+
+    private class ItemBriefAdapter extends BaseAdapter {
+
+        private final Context mContext;
+        private final List<ItemBrief> mItemList;
+        private final LayoutInflater mInflater;
+
+        public ItemBriefAdapter(Context context, List<ItemBrief> itemList) {
+            super();
+            this.mItemList = itemList;
+            this.mContext = context;
+            mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return mItemList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mItemList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView,
+                ViewGroup parent) {
+
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.brief, null);
+                holder.checkBox = (CheckBox) convertView.findViewById(R.id.chkbox_brief);
+                holder.id = (TextView) convertView.findViewById(R.id.txv_brief_id);
+                holder.name = (TextView) convertView.findViewById(R.id.txv_brief_name);
+                convertView.setTag(holder);
+            }
+            else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            ItemBrief item = mItemList.get(position);
+
+            holder.checkBox.setVisibility(TextView.GONE);
+
+            holder.id.setText(item.id);
+            com.android_assistant.TextView.setDefaultTextShadow(holder.id);
+            holder.id.setLineSpacing(0, 1.5F);
+            holder.id.setVisibility(TextView.GONE);
+
+            holder.name.setText(item.name);
+            com.android_assistant.TextView.setDefaultTextShadow(holder.name);
+            holder.name.setLineSpacing(0, 1.5F);
+
+            return convertView;
+        }
+
+        private class ViewHolder {
+            CheckBox checkBox;
+            TextView id;
+            TextView name;
+        }
+    }
 }
