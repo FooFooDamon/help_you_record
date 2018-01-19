@@ -31,14 +31,18 @@ package com.project.help_you_record;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.text.method.KeyListener;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -69,9 +73,68 @@ public class ItemDetailsActivity extends Activity {
         null // id
     };
 
-    private KeyListener ORIGINAL_ETX_KEY_LISTENER = null;
+    private static final int PAGE_ITEM_INDEX_NAME = 0;
+    private static final int PAGE_ITEM_INDEX_CATEGORY = 1;
+    private static final int PAGE_ITEM_INDEX_BRIEF = 2;
+    private static final int PAGE_ITEM_INDEX_DETAILS = 3;
+    private static final int PAGE_ITEM_INDEX_REMARKS = 4;
+
+    // TODO: Should I use one or multiple listener(s)??
+    //private KeyListener ORIGINAL_KEY_LISTENER = null;
+    private KeyListener[] ORIGINAL_KEY_LISTENERS = {
+        null, // name
+        null, // category (spinner)
+        null, // brief
+        null, // details
+        null // remarks
+    };
 
     private DialogInterface.OnClickListener mExitActivity = null;
+
+    private View.OnLongClickListener mCrashHandlerForLinkify = new OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+            EditText[] candidateEeditTexts = {
+                mEtxName,
+                null,
+                mEtxBrief,
+                mEtxDetails,
+                mEtxRemarks
+            };
+            final EditText targetEditText = (EditText)v;
+            int index = (int)targetEditText.getTag();
+            final boolean FIXED_RETURN_VALUE = true; // DO NOT return false, otherwise it may crash.
+
+            //Hint.alert(ItemDetailsActivity.this, "有特殊格式的内容", currentEditText.getText().toString());
+
+            if (null == candidateEeditTexts[index])
+                return FIXED_RETURN_VALUE;
+
+            View dialogView = getLayoutInflater().inflate(R.layout.text_edit_dialog, null);
+            final EditText etxDialogContents = (EditText) dialogView.findViewById(R.id.etx_dialog_contents);
+            final String initialText = new String(targetEditText.getText().toString());
+
+            etxDialogContents.setText(targetEditText.getText().toString());
+
+            new AlertDialog.Builder(ItemDetailsActivity.this)
+                .setTitle(R.string.tmp_dialog_title)
+                .setView(dialogView)
+                .setPositiveButton(R.string.confirm,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String currentText = etxDialogContents.getText().toString();
+                            if (!currentText.equals(initialText))
+                                targetEditText.setText(currentText);
+                        }
+                    })
+                .setNegativeButton(R.string.cancal, null)
+                .show();
+
+            return FIXED_RETURN_VALUE;
+        }
+    };
 
     @SuppressWarnings("deprecation")
     @Override
@@ -92,7 +155,7 @@ public class ItemDetailsActivity extends Activity {
         if (Version.SDK <= Version.getDeprecatedVersionUpperBound())
             doExtraJobsForLowerVersions();
 
-        ORIGINAL_ETX_KEY_LISTENER = mEtxName.getKeyListener();
+        //ORIGINAL_KEY_LISTENER = mEtxName.getKeyListener();
         switchEditStatus(false);
         mDbHelper.fillCategorySpinner(R.id.spn_category);
 
@@ -176,20 +239,29 @@ public class ItemDetailsActivity extends Activity {
     }
 
     private void initResources() {
-        if (null == mEtxName)
+        if (null == mEtxName) {
             mEtxName = (EditText) findViewById(R.id.etx_name);
+            ORIGINAL_KEY_LISTENERS[PAGE_ITEM_INDEX_NAME] = mEtxName.getKeyListener();
+        }
 
-        if (null == mEtxBrief)
+        if (null == mEtxBrief) {
             mEtxBrief = (EditText) findViewById(R.id.etx_brief);
+            ORIGINAL_KEY_LISTENERS[PAGE_ITEM_INDEX_BRIEF] = mEtxBrief.getKeyListener();
+        }
 
-        if (null == mEtxDetails)
+        if (null == mEtxDetails) {
             mEtxDetails = (EditText) findViewById(R.id.etx_details);
+            ORIGINAL_KEY_LISTENERS[PAGE_ITEM_INDEX_DETAILS] = mEtxDetails.getKeyListener();
+        }
 
-        if (null == mEtxRemarks)
+        if (null == mEtxRemarks) {
             mEtxRemarks = (EditText) findViewById(R.id.etx_remarks);
+            ORIGINAL_KEY_LISTENERS[PAGE_ITEM_INDEX_REMARKS] = mEtxRemarks.getKeyListener();
+        }
 
-        if (null == mSpnCategory)
+        if (null == mSpnCategory) {
             mSpnCategory = (Spinner) findViewById(R.id.spn_category);
+        }
 
         if (null == mDbHelper) {
             mDbHelper = new DbHelper(this);
@@ -230,14 +302,29 @@ public class ItemDetailsActivity extends Activity {
             mEtxDetails,
             mEtxRemarks
         };
+        int[] listenerIndexes = {
+            0,
+            2,
+            3,
+            4
+        };
 
         for (int i = 0; i < editTexts.length; ++i) {
-            editTexts[i].setEnabled(editable);
-            /*editTexts[i].setEnabled(true);
+            String texts = editTexts[i].getText().toString();
+            //boolean hasSpecialContents = hasAutoLinkContents(texts, true);
+
+            //editTexts[i].setEnabled(editable); // wrong
+            editTexts[i].setEnabled(true);
             editTexts[i].setAutoLinkMask(editable ? 0 : Linkify.ALL);
-            editTexts[i].setLinksClickable(!editable);
-            editTexts[i].setKeyListener(editable ? ORIGINAL_ETX_KEY_LISTENER : null);*/
+            //editTexts[i].setLinksClickable(!editable); // seems no use
+            editTexts[i].setKeyListener(editable ? ORIGINAL_KEY_LISTENERS[listenerIndexes[i]] : null);
+            editTexts[i].setTag(listenerIndexes[i]);
+            if (editable)
+                editTexts[i].setOnLongClickListener(/*hasSpecialContents ? */mCrashHandlerForLinkify/* : null*/);
+            else
+                editTexts[i].setOnLongClickListener(null);
             com.android_assistant.TextView.setDefaultTextShadow(editTexts[i]);
+            editTexts[i].setText(texts); // sets text again to erase the auto-link style when in edit mode.
         }
     }
 
@@ -264,6 +351,28 @@ public class ItemDetailsActivity extends Activity {
 
         for (int i = 0; i < textColumnNames.length; ++i) {
             editTexts[i].setText(mapDetails.get(textColumnNames[i]));
+        }
+    }
+
+    // TODO: unfinished ...
+    private boolean hasAutoLinkContents(String str, boolean returnValueIfFailed) {
+
+        final String[] patterns = {
+            "([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}", // E-Mail
+            "(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})", // Phone number
+            "(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)" // URL
+        };
+
+        try {
+            for (int i = 0; i < patterns.length; ++i) {
+                if (java.util.regex.Pattern.compile(patterns[i]).matcher(str).matches())
+                    return true;
+            }
+
+            return false;
+        }
+        catch (Exception e) {
+            return returnValueIfFailed;
         }
     }
 }
